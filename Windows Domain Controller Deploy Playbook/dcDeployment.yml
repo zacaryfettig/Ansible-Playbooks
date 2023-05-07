@@ -5,9 +5,9 @@
   tasks:
   - ansible.windows.win_domain_membership:
       dns_domain_name: forest.com
-      hostname: server102
-      domain_admin_user: administrator@forest.com
-      domain_admin_password: AndroidMark#3
+      hostname: serverName
+      domain_admin_user: 
+      domain_admin_password: 
       domain_ou_path: "OU=servers,DC=FOREST,DC=COM"
       state: domain
     register: domain_state
@@ -19,9 +19,9 @@
   - name: "Promote DC"
     win_domain_controller:
       dns_domain_name: forest.com
-      domain_admin_user: administrator@forest.com
-      domain_admin_password: AndroidMark#3
-      safe_mode_password: AndroidMark#3
+      domain_admin_user: 
+      domain_admin_password: 
+      safe_mode_password: 
       state: domain_controller
       register: dc_promotion
 
