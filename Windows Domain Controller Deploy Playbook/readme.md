@@ -12,13 +12,13 @@ sudo ansible-vault create vault_dcDeployment.yml
 
 domain_ou_path: "OU=servers,DC=YOURDOMAIN,DC=COM"
 
-domain_admin_user: DomainUsername
+domain_admin_user: YourDomainUsername
 
-domain_admin_password: DomainPassword
+domain_admin_password: YourDomainPassword
 
 hostname: new hostname of the server you want to add to the domain
 
-dns_domain_name: DomainName
+dns_domain_name: YourDomainName
 
 safe_mode_password: DomainSafeModePassword
 
