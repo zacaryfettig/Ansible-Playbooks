@@ -4,11 +4,11 @@
   gather_facts: no
   tasks:
   - ansible.windows.win_domain_membership:
-      dns_domain_name: forest.com
-      hostname: serverName
-      domain_admin_user: 
-      domain_admin_password: 
-      domain_ou_path: "OU=servers,DC=FOREST,DC=COM"
+      dns_domain_name: "{{ dns_domain_name }}"
+      hostname: "{{ hostname }}"
+      domain_admin_user: "{{  domain_admin_user }}"
+      domain_admin_password: "{{ domain_admin_password }}"
+      domain_ou_path: "{{ domain_ou_path }}"
       state: domain
     register: domain_state
 
@@ -18,10 +18,10 @@
 
   - name: "Promote DC"
     win_domain_controller:
-      dns_domain_name: forest.com
-      domain_admin_user: 
-      domain_admin_password: 
-      safe_mode_password: 
+      dns_domain_name: "{{ dns_domain_name }}"
+      domain_admin_user: "{{ domain_admin_user }}"
+      domain_admin_password: "{{ domain_admin_password }}"
+      safe_mode_password: "{{ safe_mode_password }}"
       state: domain_controller
       register: dc_promotion
 
