@@ -24,7 +24,7 @@ Playbook creates a Windows web app with an SQL server
 export AZURE_SUBSCRIPTION_ID=cb746d33-61f2-4005-a6e1-323245542be4
 ```
 
-2. Run playbook. Specify subscription your subscription id at the end for setting the variable within the script.
+2. Run playbook. Specify your subscription id at the end for setting the variable within the script.
 ```
 ansible-playbook web_app_with_sql_ansible.yml --extra-vars AZURE_SUBSCRIPTION_ID=YOURSUBSCRIPTIONID
 ```
