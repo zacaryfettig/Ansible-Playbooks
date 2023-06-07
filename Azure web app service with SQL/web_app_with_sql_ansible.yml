@@ -1,0 +1,123 @@
+---
+- hosts: localhost
+  connection: local
+  vars_prompt:
+
+   - name: resourceGroup
+     prompt: Enter name for Resource Group
+     private: no
+
+   - name: location
+     prompt: Enter location for the resources to use
+     private: no
+
+   - name: webApp
+     prompt: Enter name for web app. Must be globally unique
+     private: no
+
+   - name: sqlServer
+     prompt: Enter name for SQL Server. Must be globally unique
+     private: no
+
+   - name: databaseUsername
+     prompt: Enter an Admin username for the database
+     private: no
+
+
+   - name: databasePassword    
+     prompt: Enter an SQL password for the creation of the database
+
+  tasks: 
+  - name: Create a resource group
+    azure_rm_resourcegroup:
+     name: "{{ resourceGroup }}"
+     location: "{{ location }}"
+
+  - name: create nsg
+    azure.azcollection.azure_rm_securitygroup:
+     resource_group: "{{ resourceGroup }}"
+     name: "{{ resourceGroup }}-rgNsg"
+
+  - name: Create a windows web app
+    azure_rm_webapp:
+     resource_group: "{{ resourceGroup }}"
+     name: "{{webApp}}"
+     plan:
+       resource_group: "{{ resourceGroup }}"
+       name: "{{webApp}}-plan"
+       is_linux: false
+       sku: S1
+
+  - name: Create SQL Server
+    azure_rm_sqlserver:
+     resource_group: "{{ resourceGroup }}"
+     name: "{{sqlServer}}"
+     location: "{{ location }}"
+     admin_username: "{{ databaseUsername }}"
+     admin_password: "{{ databasePassword }}"
+
+  - name: Create SQL Database
+    azure_rm_sqldatabase:
+     resource_group: "{{ resourceGroup }}"
+     server_name: "{{sqlServer}}"
+     name: "{{sqlServer}}-DB"
+     location: "{{ location }}"
+     sku:
+       name: S0
+
+  - name: Create a virtual network for sql
+    azure_rm_virtualnetwork:
+     resource_group: "{{ resourceGroup }}"
+     name: vnet
+     address_prefixes_cidr:
+         - "10.0.0.0/16"
+
+  - name: Create a subnet with delegations
+    azure_rm_subnet:
+     resource_group: "{{ resourceGroup }}"
+     virtual_network_name: vnet
+     name: delagationSubnet
+     address_prefix_cidr: "10.0.1.0/24"
+     delegations:
+       - name: 'appServiceDelegation'
+         serviceName: 'Microsoft.Web/serverFarms'
+
+  - name: Create a subnet for sql
+    azure_rm_subnet:
+     resource_group: "{{ resourceGroup }}"
+     virtual_network_name: vnet
+     name: subnetSql
+     address_prefix_cidr: "10.0.2.0/24"
+
+  - name: Create Firewall Rule
+    azure.azcollection.azure_rm_sqlfirewallrule:
+     resource_group: "{{ resourceGroup }}"
+     server_name: "{{ sqlServer }}"
+     name: FirewallRule1
+     start_ip_address: 10.0.2.1
+     end_ip_address: 10.0.2.254
+
+  - name: Create private endpoint
+    azure.azcollection.azure_rm_privateendpoint:
+     name: privateEndpoint
+     resource_group: "{{ resourceGroup }}"
+     private_link_service_connections:
+       - name: privateLink
+         private_link_service_id: /subscriptions/{{ AZURE_SUBSCRIPTION_ID }}/resourceGroups/{{ resourceGroup }}/providers/Microsoft.Sql/servers/{{sqlServer}}
+         group_ids:
+           - sqlserver
+     subnet:
+       id: /subscriptions/{{ AZURE_SUBSCRIPTION_ID }}/resourceGroups/{{ resourceGroup }}/providers/Microsoft.Network/virtualNetworks/vnet/subnets/subnetSql
+
+  - name: Create a private DNS zone
+    azure.azcollection.azure_rm_privatednszone:
+     resource_group: "{{ resourceGroup }}"
+     name: privatelink.azurewebsites.net
+
+  - name: Create a virtual network link
+    azure.azcollection.azure_rm_privatednszonelink:
+     resource_group: "{{ resourceGroup }}"
+     name: sqlVnetLink1
+     zone_name: privatelink.azurewebsites.net
+     virtual_network: vnet
+     state: present
