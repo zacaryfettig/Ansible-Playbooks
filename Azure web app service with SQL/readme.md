@@ -1,5 +1,5 @@
 # Azure web app service with SQL
-Playbook creates a Windows web app with an SQL server
+Playbook creates a Windows web app with secure connection to a SQL server
 
 ## Resources created in Playbook
 
