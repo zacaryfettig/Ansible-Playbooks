@@ -11,16 +11,21 @@
      prompt: Enter location for the resources to use
      private: no
 
+   - name: webApp
+     prompt: Enter name for web app. Must be globally unique
+     private: no
+
    - name: sqlServer
-     prompt: Enter name for SQL Server Must be globally unique
+     prompt: Enter name for SQL Server. Must be globally unique
      private: no
 
    - name: databaseUsername
      prompt: Enter an Admin username for the database
      private: no
 
+
    - name: databasePassword    
-     prompt: Enter an SQL password for the creation of the databse
+     prompt: Enter an SQL password for the creation of the database
 
   tasks: 
   - name: Create a resource group
@@ -33,26 +38,29 @@
      resource_group: "{{ resourceGroup }}"
      name: "{{ resourceGroup }}-rgNsg"
 
-  - name: Create a windows app service plan
-    azure_rm_appserviceplan: 
+  - name: Create a windows web app
+    azure_rm_webapp:
      resource_group: "{{ resourceGroup }}"
-     name: "{{ resourceGroup }}-myAppPlan"
-     location: "{{ location }}"
-     sku: S1
+     name: "{{webApp}}"
+     plan:
+       resource_group: "{{ resourceGroup }}"
+       name: "{{webApp}}-plan"
+       is_linux: false
+       sku: S1
 
-  - name: Create (or update) SQL Server
+  - name: Create SQL Server
     azure_rm_sqlserver:
      resource_group: "{{ resourceGroup }}"
-     name: "{{ sqlServer }}"
+     name: "{{sqlServer}}"
      location: "{{ location }}"
      admin_username: "{{ databaseUsername }}"
      admin_password: "{{ databasePassword }}"
 
-  - name: Create (or update) SQL Database with SKU
+  - name: Create SQL Database
     azure_rm_sqldatabase:
      resource_group: "{{ resourceGroup }}"
-     server_name: "{{ sqlServer }}"
-     name: "{{ sqlServer }}-sqlDB"
+     server_name: "{{sqlServer}}"
+     name: "{{sqlServer}}-DB"
      location: "{{ location }}"
      sku:
        name: S0
@@ -95,7 +103,7 @@
      resource_group: "{{ resourceGroup }}"
      private_link_service_connections:
        - name: privateLink
-         private_link_service_id: /subscriptions/{{ AZURE_SUBSCRIPTION_ID }}/resourceGroups/{{ resourceGroup }}/providers/Microsoft.Sql/servers/{{ sqlServer }}
+         private_link_service_id: /subscriptions/{{ AZURE_SUBSCRIPTION_ID }}/resourceGroups/{{ resourceGroup }}/providers/Microsoft.Sql/servers/{{sqlServer}}
          group_ids:
            - sqlserver
      subnet:
