@@ -1,4 +1,4 @@
-# Windows Domain Controller Deploy Playbook
+# Azure web app service with SQL
 Playbook creates a Windows web app with an SQL server
 
 ## Resources created in Playbook
