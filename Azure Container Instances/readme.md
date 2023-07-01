@@ -1,5 +1,5 @@
 # Azure Container Instances
-Playbook creates a httpd web server container with connection to github repo
+Playbook creates an Azure container instance that has a connection to an Azure file share.
 
 ## Playbook Deployment
 Ansible is built into the Azure Cloud Shell and can be run from there.
