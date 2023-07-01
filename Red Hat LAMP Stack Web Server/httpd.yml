@@ -1,0 +1,41 @@
+- hosts: linux
+  gather_facts: no
+  become: yes
+  tasks:
+  
+  - name: Install httpd package
+    dnf:
+      name: httpd
+      state: latest
+    
+  - name: Start and enable httpd service
+    service:
+      name: httpd
+      enabled: true
+      state: started
+
+  - name: firewall rules
+    firewalld:
+      state: enabled
+      permanent: yes
+      immediate: yes
+      service: "{{ item }}"
+    with_items:
+     - http
+     - https
+
+  - name: Install SQL
+    dnf:
+      name: community-mysql-server
+      state: latest
+    
+  - name: Start and enable sql service
+    service:
+      name: mysqld
+      enabled: true
+      state: started
+    
+  - name: Install php
+    dnf:
+      name: php 
+      state: latest
