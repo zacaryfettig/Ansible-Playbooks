@@ -5,6 +5,7 @@ Playbook creates an Azure container instance running an image of httpd that has 
 
 ----Storage Account Playbook----
 
+
 * Resource Group: Container that holds related resources for an Azure solution
 
 * Storage Account: Holds storage data
@@ -12,6 +13,7 @@ Playbook creates an Azure container instance running an image of httpd that has 
 * Storage File Share: SMB based file share
 
 * az storage account keys list: powrshell command that displays storage account keys output
+* 
 
 ----Web Server Playbook----
 
