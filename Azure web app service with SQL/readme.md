@@ -19,7 +19,7 @@ Playbook creates a Windows web app with secure connection to a SQL server
 
 ## Playbook Deployment
 
-Ansible is built into the Azure Cloud Shell and can be run from there.
+Ansible is built into the Azure Cloud Shell and can be run from the Cloud Shell
 
 1. Set subscription to be used
 ```
