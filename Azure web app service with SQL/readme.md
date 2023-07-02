@@ -21,12 +21,14 @@ Playbook creates a Windows web app with secure connection to a SQL server
 
 Ansible is built into the Azure Cloud Shell and can be run from the Cloud Shell
 
-1. Set subscription to be used
+1. Upload playbook yaml file to Azure cloud shell storage
+
+2. Set subscription to be used
 ```
 export AZURE_SUBSCRIPTION_ID=YOURSUBSCRIPTIONID
 ```
 
-2. Run playbook. Specify your subscription id at the end for setting the variable within the script.
+3. Run playbook. Specify your subscription id at the end for setting the variable within the script.
 ```
 ansible-playbook web_app_with_sql_ansible.yml --extra-vars AZURE_SUBSCRIPTION_ID=YOURSUBSCRIPTIONID
 ```
