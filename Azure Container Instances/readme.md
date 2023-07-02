@@ -5,12 +5,17 @@ Playbook creates an Azure container instance that has a connection to an Azure f
 Ansible is built into the Azure Cloud Shell and can be run from there.
 1. Upload playbook yaml file to Azure cloud shell storage
 
-2. Open cloud shell in Azure portal and change directory to yaml file location
+2. install ansible galaxy collection for use of extra modules for interacting with Azure.
 ```
-cd cloudrive
+ansible-galaxy collection install azure.azcollection
 ```
 
-3. Run below command in the terminal
+3. Run first playbook for creating azure file share
 ```
-ansible-playbook web_app_with_sql_ansible.yml
+ansible-playbook storageAccount.yml
+```
+
+4. Run webserver playbook
+```
+ansible-playbook webserver.yml
 ```
