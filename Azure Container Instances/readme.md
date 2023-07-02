@@ -26,7 +26,9 @@ Playbook creates an Azure container instance running an image of httpd that has 
 * Container Volume: Mounts the file share to a mount path on the container
 
 ## Playbook Deployment
-Ansible is built into the Azure Cloud Shell and can be run from there.
+
+Ansible is built into the Azure Cloud Shell and can be run from the Cloud Shell
+
 1. Upload playbook yaml file to Azure cloud shell storage
 
 2. install ansible galaxy collection for use of extra modules for interacting with Azure.
