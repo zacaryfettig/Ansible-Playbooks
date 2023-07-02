@@ -1,0 +1,53 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: no
+
+  vars_prompt:
+
+   - name: resourceGroup
+     prompt: Enter name for Resource Group
+     private: no
+
+   - name: location
+     prompt: Enter location
+     private: no
+
+   - name: storageAccountName
+     prompt: Enter name for storage account
+     private: no
+
+  tasks:
+  - name: Create a resource group
+    azure_rm_resourcegroup:
+     name: "{{ resourceGroup }}"
+     location: "{{ location }}"
+
+  - name: create an account
+    azure_rm_storageaccount:
+     resource_group: "{{ resourceGroup }}"
+     name: "{{ storageAccountName }}"
+     type: Premium_LRS
+     kind: FileStorage
+
+  - name: Create storage share
+    azure.azcollection.azure_rm_storageshare:
+      name: containershare
+      resource_group: "{{ resourceGroup }}"
+      account_name: "{{ storageAccountName }}"
+      state: present
+      access_tier: Premium
+      quota: 2048
+      metadata:
+        key1: value1
+        key2: value2
+
+  - name: Retrieve storage access key
+    shell: "az storage account keys list --resource-group {{ resourceGroup }} --account-name {{ storageAccountName }}  | jq -r '.[].value' | head -1"
+    register: storage_access_key
+
+  - debug:
+     msg: "storage account name: {{ storageAccountName }} <--save for use with webserver playbook"
+
+  - debug:
+     msg: "Storage Access Key: {{ storage_access_key.stdout }} <--Save for use with webserver playbook"

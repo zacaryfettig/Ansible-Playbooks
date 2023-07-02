@@ -1,0 +1,44 @@
+---
+- hosts: localhost
+  connection: local
+  vars_prompt:
+
+   - name: resourceGroup
+     prompt: Name of Resource Group
+     private: no
+
+   - name: storageAccountName
+     prompt: Enter storage account name from previous playbook
+     private: no
+
+   - name: storageAccessKey
+     prompt: Enter Storage Account Key from previous playbook
+     private: no
+
+  tasks:
+
+  - name: Add directory to file share to mount inside container
+    shell: az storage directory create --account-name {{ storageAccountName }} --share-name containershare --account-key {{ storageAccessKey }} --name containerstorage
+
+  - name: Create container group with azure file share
+    azure_rm_containerinstance:
+      resource_group: "{{ resourceGroup }}"
+      name: containerGroup
+      os_type: linux
+      ip_address: public
+      containers:
+        - name: container1
+          image: httpd
+          memory: 2
+          volume_mounts:
+            - name: containerstorage
+              mount_path: "/mnt/azstorage"
+          ports:
+            - 80
+            - 81
+      volumes:
+        - name: containerstorage
+          azure_file:
+            storage_account_name: "{{ storageAccountName }}"
+            share_name: containershare
+            storage_account_key: "{{ storageAccessKey }}"
