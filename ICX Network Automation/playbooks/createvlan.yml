@@ -3,11 +3,11 @@
   gather_facts: no
   vars:
     ansible_network_os: icx
-    ansible_user: pccadmin
+    ansible_user: 
     ansible_become: True
-    ansible_password: Pccpcc2011*
+    ansible_password: 
     ansible_become_method: enable
-    ansible_become_pass: Pccpcc2011*
+    ansible_become_pass: 
     ansible_command_timeout: 80
   tasks:
   - name: reboot switches
