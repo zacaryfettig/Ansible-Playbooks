@@ -1,0 +1,8 @@
+[icx]
+10.0.0.253
+10.0.0.250
+
+[icx:vars]
+scp_remote_user=pccadmin
+scp_remote_pass=Pccpcc2011*
+ansible_connection=network_cli
