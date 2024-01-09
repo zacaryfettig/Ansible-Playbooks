@@ -5,7 +5,7 @@ Playbooks used to make ICX configuration changes using Ansible. Ansible uses ssh
 ## Playbook Deployment
 
 
-1. install ansible galaxy collection for use of extra modules for interacting with Azure.
+1. install ansible galaxy collection so that Ansible knows how to translate it's configuration file into commands on the switch.
 ```
 ansible-galaxy collection install commscope.icx 
 ```
