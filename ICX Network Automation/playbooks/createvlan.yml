@@ -10,6 +10,6 @@
     ansible_become_pass: 
     ansible_command_timeout: 80
   tasks:
-  - name: reboot switches
+  - name: create vlan 150
     commscope.icx.icx_vlan:
       vlan_id: 150
