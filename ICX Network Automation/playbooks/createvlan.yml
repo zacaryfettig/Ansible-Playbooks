@@ -1,15 +1,17 @@
 ---
 - hosts: icx
+  vars_files:
+      /etc/ansible/playbooks/variables.yml
   gather_facts: no
   vars:
     ansible_network_os: icx
-    ansible_user: 
+    ansible_user: "{{ encryptedUser }}"
     ansible_become: True
-    ansible_password: 
+    ansible_password: "{{ encryptedPass }}"
     ansible_become_method: enable
-    ansible_become_pass: 
+    ansible_become_pass: "{{ encryptedPass }}"
     ansible_command_timeout: 80
   tasks:
-  - name: create vlan 150
+  - name: Add Vlan
     commscope.icx.icx_vlan:
       vlan_id: 150
