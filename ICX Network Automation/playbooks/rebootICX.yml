@@ -1,12 +1,14 @@
 ---
 - hosts: icx
+  vars_files:
+      /etc/ansible/playbooks/variables.yml
   gather_facts: no
   vars:
     ansible_network_os: icx
-    ansible_user: 
-    ansible_password: 
+    ansible_user: "{{ encryptedUser }}"
+    ansible_password: "{{ encryptedPass }}"
     ansible_become_method: enable
-    ansible_become_pass: 
+    ansible_become_pass: "{{ encryptedPass }}"
     ansible_command_timeout: 80
   tasks:
   - name: reboot switches
