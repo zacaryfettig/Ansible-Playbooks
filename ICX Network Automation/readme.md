@@ -1,4 +1,4 @@
-# Rucks ICX Network Automation using Ansible
+# Ruckus ICX Network Automation using Ansible
 Playbooks used to make ICX configuration changes using Ansible. Ansible uses ssh to login to the network switches and uses the comscope.icx collection modules to run commands on the switches.
 
 
